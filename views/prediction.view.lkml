@@ -10,23 +10,13 @@ view: prediction {
     (SELECT {% parameter EMIAmount %} AS emi_amount,
             {% parameter LineAmount %} AS line_amount,
             {% parameter MaxDPD %} AS max_dpd,
-            {% parameter CustomerAge %} AS age))
-            UNION ALL
-    SELECT predicted_period as predicted_amount,emi_amount,line_amount,age,max_dpd,period as amount
-    FROM ML.PREDICT(MODEL `card-loans.loans.GBModel2`,
-    (SELECT {% parameter EMIAmount %} AS emi_amount,
-            {% parameter LineAmount %} AS line_amount,
-            {% parameter MaxDPD %} AS max_dpd,
             {% parameter CustomerAge %} AS age));;
   }
   dimension: predict_prob {
     type: number
     sql: ${TABLE}.predicted_amount ;;
   }
-  dimension: predict_prob1 {
-    type: number
-    sql: ${TABLE}.predicted_period ;;
-  }
+
   dimension: emi_amount {
     type: number
     sql: ${TABLE}.emi_amount ;;
